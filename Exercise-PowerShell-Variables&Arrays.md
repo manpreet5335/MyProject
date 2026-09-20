@@ -132,3 +132,109 @@ Now add data to the array
 $data = @('zero', 'one' , 'two' , 'three')
 $data
 ```
+We can use the index of the items in the array. Indexes start at 0, so to retreive the first item in our array use
+```ps
+$data[0]
+```
+This will return `zero`because that was the first string we put in our array.
+To return multiple items use
+```ps
+$data[0,1,2,3]
+```
+This will return `zero``one``two``three`. Items are returned in the same order that you entered the indexes.
+To return the sets of item from an array use
+```ps
+$data[1..3]
+```
+It will return all items with an index between 1 and 3 (inclusive)
+To return the last item in the array use
+```ps
+$data[-1]
+```
+The negative number tells PowerShell to count backword from the end of the array.
+
+To update the items in an array use
+```ps
+$data[2] = 'second'
+```
+This will update the item whose index is 2.
+
+## Flow Control and Iteration Action on arrays
+We can use a pipeline which is the character `|` When you pass an array to a pipeline each item in an array is processed individually. For instance to add a description to each item in our array, we can use this command.
+```ps
+$data | ForEach-Object {"Item: {$PSItem}"}
+```
+This command tells PowerShell to take the item in our array `$data` one at a time and then for each of them add " Item:" to the beginning, followed by the original value.
+*Creating an Arrays of Objects*
+We can create an array of objects in the same eay that we did  with strings, using the @() function. For instance, to make a test list of employees, we can use 
+```ps
+$data = @(
+    [pscustomobject]@{FirstName='Kevin'; LastName='Marquette'}
+    [pscustomobject]@{FirstName='John'; Lastname='Doe'}
+)
+To access the objects from arrays
+```ps
+$data[0]
+or
+$data[0].FirstName
+```
+To update the object properties use
+```ps
+$data[0].FirstName = 'Jay'
+```
+To access all the properties in an array of object use
+```ps
+$data | ForEach-Object {$_.LastName}
+or
+$data.LastName
+```
+This will return a list of all of the Lastname proprety in our array.
+
+## Operators for Arrays
+*-join*
+It is used iteratevily on the items in an array to join them together in the output of an array
+```ps
+$data = @(1,2,3,4)
+```
+And then use -join to insert a hyphen in between each item and output the result
+```ps
+$data -join '-'
+```
+This will return `1-2-3-4` 
+
+*-contains*
+It can be use to check of an array contains a particular string and ot will output a Boolean Value. For instance
+```ps
+$data = @ ('red','green','blue')
+$data -contains 'green'
+```
+This will return `true`
+
+*equalities*
+There are two operators for checking for equality in PowerShell: `-eq` and `-ne`. If you are used to using these on single values, though, the way that these work in relation to arrays can seem a little strange. If you use `-eq`, for instance, the operator will not output a Boolean `True`, but instead will return the object that matches.
+```ps
+$data =@('red','green','blue')
+$data -eq 'green'
+```
+This will return `green`
+
+The `-ne` operator works in much the same way, except that it will give you all the values that are not equal to your specified value. 
+```ps
+$data =@('red','green','blue')
+$data -ne 'green'
+```
+This will return `red``blue`
+
+## Array Addition
+PowerShell can add two arrays together using the operator `+`  
+```ps
+$first = @('zero', 'one')
+$second = @('two', 'three')
+$first + $second
+```
+This will make a new array with all four values and output the result. It will not give this new array a new name.
+Alternative to above apporoach is 
+```ps
+$first += 'Two, Three'
+```
+
