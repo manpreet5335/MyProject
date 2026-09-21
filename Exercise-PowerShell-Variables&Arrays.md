@@ -237,4 +237,85 @@ Alternative to above apporoach is
 ```ps
 $first += 'Two, Three'
 ```
+## Types of Arrays
+*strongly typed arrays*
+There are times when you want to restrict the types of data or objects that are array can hold to just one. We can do this by using a strongly typed array, which can only contain the specified data type
+For instance, to make an array that can only take integers we can use
+```ps
+[int[]] $numbers = 1,2,3
+```
+If you try and put the wrong type of data value into a strongly typed array, it will return an error code.
+
+*Array Lists*
+To create an ArrayList, and then add items to it, run the following:
+```ps
+$myarray = [System.Collections.ArrayList]::new()
+[void]$myArray.Add('Value')
+```
+Here, we can use the default .Net constructor to create a new ArrayList, and then using the -Add operator to add items to it. The `void` operator is there because sometimes these commands throw out strange outputs that can mess with the code.
+
+## Additional Array Functions
+*Pre-Sized Arrays*
+You can create an array of a specified size by using the new($size) constructor.
+```ps
+$data = [Object[]]::new(4)
+```
+If you run a .count query on this array, it will return “4”, because even though it doesn’t have data in it, it will fill the space with 0.
+
+*Multiplying Arrays*
+Multiply the objects in an array,use
+```ps
+$data = @('red','green','blue')
+$data * 3
+```
+This will create a new array with each array with each value repeated three times.
+
+*Nested Arrays*
+PowerShell supports nested arrays. To create a multi-dimensional array use
+```ps
+$data = @(@(1,2,3),@(4,5,6),@(7,8,9))
+```
+To access the value 3, we would use
+```ps
+$outsideIndex = 0
+$insudeIndex = 2
+$data[$outsideIndex][$insideIndex]
+```
+This will result in 3
+
+**Use-Case: Investigating a Failed Server Backup**
+
+A system administrator has collected a list of servers that reported backup failures overnight. Some servers appear multiple times because they failed during multiple backup jobs.
+```text
+$failedServers = @(
+    "SRV-FILE01",
+    "SRV-DB01",
+    "SRV-WEB01",
+    "SRV-FILE01",
+    "SRV-APP01",
+    "SRV-DB01",
+    "SRV-BACKUP01"
+)
+```
+Create a script that displays the total number of failure records. It also, create a list of unique servers that failed. Check whether `SRV-DB01` is in the failure list.Finally, create a semicolon-separated list of the unique failed servers. 
+
+
+```ps
+$failedServers = @(
+    "SRV-FILE01",
+    "SRV-DB01",
+    "SRV-WEB01",
+    "SRV-FILE01",
+    "SRV-APP01",
+    "SRV-DB01",
+    "SRV-BACKUP01"
+)
+Write-Host "`nTotal Failure Records: $($failedServers.Count)"
+$uniqueServers = $failedServers |
+    Select-Object -Unique 
+if ($uniqueServers -contains "SRV-DB01") {
+    Write-Host "SRV-DB01 is in the failure list."
+}
+$serverList = $uniqueServers -join "; "
+```
 
