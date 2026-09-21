@@ -4,6 +4,7 @@
 - Run the commandlets, analyze the output and write briefly your observation.
 - Use PowerShell 7.6 Core otherwise mentioned explicitly
 - Prompt should be '<firstname>-PS>'
+  
 ```ps
 function prompt {'firstname-PS'}
 ```
@@ -298,7 +299,6 @@ $failedServers = @(
 )
 ```
 Create a script that displays the total number of failure records. It also, create a list of unique servers that failed. Check whether `SRV-DB01` is in the failure list.Finally, create a semicolon-separated list of the unique failed servers. 
-
 
 ```ps
 $failedServers = @(
