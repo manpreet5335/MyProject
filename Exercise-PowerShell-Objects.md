@@ -179,12 +179,14 @@ $Svc = Get-Service -ServiceName 'BITS' #Object you are working with
 $Svc.Start() #Method / action you are taking
 $Svc.Refresh() #Method / action you are taking
 $Svc.Status #Property
+```
 
 Use Case Scenario: Find Large Log Files
 
 A company stores application log files in the C:\Logs folder and its subfolders. Recently, the server has been running low on disk space, and the system administrator wants to identify large log files that may be contributing to the problem. 
-Write a PowerShell script that searches the C:\Logs directory recursively, finds all.log files larger than 5 MB, displays each file's Name, Directory Name, and Size in MB, sorts the results from the largest file to the smallest, and finally displays the total number of log files that match the criteria. 
- ```ps
+Write a PowerShell script that searches the C:\Logs directory recursively, finds all.log files larger than 5 MB, displays each file Name, Directory Name, and Size in MB, sorts the results from the largest file to the smallest, and finally displays the total number of log files that match the criteria.
+
+```ps
  $files = Get-ChildItem -Path "C:\Logs" -Recurse -Filter "*.log" |
 Where-Object {$_.Length -gt 5MB} |
 Select-Object Name, DirectoryName, @{Name='SizeMB';Expression={:Round($_.Length/1MB,2)}} |
